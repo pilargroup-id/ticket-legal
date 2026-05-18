@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 
 import DialogEditTicket from '../../components/dialog/DialogEditMT.jsx'
 import DialogFeedbackUser from '../../components/dialog/DialogFeedbackUser.jsx'
+import DialogTimelineMT from '../../components/dialog/DialogTimelineMT.jsx'
 import MobileCardMT from './MobileCardMT.jsx'
 
 import DataTable, {
@@ -52,6 +53,43 @@ const columns = [
         {ticket.status}
       </DataTableStatus>
     ),
+  },
+  {
+    key: 'status_document',
+    header: 'Status Document',
+    cellStyle: { whiteSpace: 'nowrap', width: '12%' },
+    render: (ticket) => {
+      const val = ticket.status_document
+      const displayVal = typeof val === 'string' ? val.charAt(0).toUpperCase() + val.slice(1) : '-'
+      const isReady = val === 'ready'
+      return (
+        <span 
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            padding: '4px 10px',
+            borderRadius: '12px',
+            fontSize: '12px',
+            fontWeight: 600,
+            textTransform: 'capitalize',
+            backgroundColor: isReady ? '#ecfdf5' : '#fef2f2',
+            color: isReady ? '#059669' : '#dc2626',
+            border: `1px solid ${isReady ? '#a7f3d0' : '#fecaca'}`,
+          }}
+        >
+          <span 
+            style={{
+              width: '6px',
+              height: '6px',
+              borderRadius: '50%',
+              backgroundColor: isReady ? '#10b981' : '#ef4444',
+            }}
+          />
+          {displayVal}
+        </span>
+      )
+    }
   },
    {
     key: 'problem',
@@ -142,6 +180,7 @@ function DataTableMT({
   }
 
   const tableActions = getTicketTableActions({
+    onTimeline: (ticket) => openActionDialog('timeline', ticket),
     onEdit: (ticket) => openActionDialog('edit', ticket),
     onFeedback: (ticket) => openActionDialog('feedback', ticket),
   })
@@ -190,6 +229,7 @@ function DataTableMT({
               <MobileCardMT
                 key={ticket.id ?? ticket.ticketCode}
                 ticket={ticket}
+                onTimeline={() => openActionDialog('timeline', ticket)}
                 onEdit={() => openActionDialog('edit', ticket)}
                 onFeedback={() => openActionDialog('feedback', ticket)}
               />
@@ -221,6 +261,14 @@ function DataTableMT({
         ticket={selectedTicket}
         onClose={closeActionDialog}
         onUpdated={handleEditConfirm}
+      />
+
+      <DialogTimelineMT
+        isOpen={activeActionDialog === 'timeline'}
+        eyebrow="Timeline Ticket"
+        title={`Status History for ${selectedTicketName}`}
+        items={selectedTicket?.timeline || []}
+        onClose={closeActionDialog}
       />
 
       <DialogFeedbackUser

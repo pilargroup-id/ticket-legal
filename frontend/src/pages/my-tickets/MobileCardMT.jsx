@@ -33,7 +33,7 @@ function getStatusColor(status) {
   }
 }
 
-function MobileCardMT({ ticket, onEdit, onFeedback }) {
+function MobileCardMT({ ticket, onTimeline, onEdit, onFeedback }) {
   if (!ticket) return null;
 
   const catStyles = getCategoryStyles(ticket.category);
@@ -148,20 +148,20 @@ function MobileCardMT({ ticket, onEdit, onFeedback }) {
           </div>
         </div>
 
-        {/* Right side: Action Button (Edit / Feedback) */}
-        {ticket.status === 'Resolved' ? (
+        {/* Right side: Action Buttons */}
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
           <button
             onClick={(e) => {
               e.stopPropagation();
-              onFeedback?.(ticket);
+              onTimeline?.(ticket);
             }}
             style={{
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
-              backgroundColor: '#fef3c7', // light yellow
-              color: '#d97706', // dark yellow/amber
-              border: '1px solid #fde68a',
+              backgroundColor: '#eff6ff', // light blue
+              color: '#1d4ed8', // primary blue
+              border: '1px solid #bfdbfe',
               borderRadius: '8px',
               padding: '6px 12px',
               fontSize: '12px',
@@ -171,47 +171,80 @@ function MobileCardMT({ ticket, onEdit, onFeedback }) {
               boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
             }}
             onMouseOver={(e) => {
-              e.currentTarget.style.backgroundColor = '#fde68a';
+              e.currentTarget.style.backgroundColor = '#dbeafe';
             }}
             onMouseOut={(e) => {
-              e.currentTarget.style.backgroundColor = '#fef3c7';
+              e.currentTarget.style.backgroundColor = '#eff6ff';
             }}
           >
-            <RateReviewOutlinedIcon sx={{ fontSize: 14 }} />
-            <span>Feedback</span>
+            <AccessTimeIcon sx={{ fontSize: 14 }} />
+            <span>Timeline</span>
           </button>
-        ) : (
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onEdit?.(ticket);
-            }}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              backgroundColor: '#f1f5f9', // light gray
-              color: '#475569', // slate
-              border: '1px solid #e2e8f0',
-              borderRadius: '8px',
-              padding: '6px 12px',
-              fontSize: '12px',
-              fontWeight: 600,
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-              boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.backgroundColor = '#e2e8f0';
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.backgroundColor = '#f1f5f9';
-            }}
-          >
-            <EditOutlinedIcon sx={{ fontSize: 14 }} />
-            <span>Edit</span>
-          </button>
-        )}
+
+          {ticket.status === 'Resolved' ? (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onFeedback?.(ticket);
+              }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                backgroundColor: '#fef3c7', // light yellow
+                color: '#d97706', // dark yellow/amber
+                border: '1px solid #fde68a',
+                borderRadius: '8px',
+                padding: '6px 12px',
+                fontSize: '12px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.backgroundColor = '#fde68a';
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.backgroundColor = '#fef3c7';
+              }}
+            >
+              <RateReviewOutlinedIcon sx={{ fontSize: 14 }} />
+              <span>Feedback</span>
+            </button>
+          ) : (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit?.(ticket);
+              }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                backgroundColor: '#f1f5f9', // light gray
+                color: '#475569', // slate
+                border: '1px solid #e2e8f0',
+                borderRadius: '8px',
+                padding: '6px 12px',
+                fontSize: '12px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.backgroundColor = '#e2e8f0';
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.backgroundColor = '#f1f5f9';
+              }}
+            >
+              <EditOutlinedIcon sx={{ fontSize: 14 }} />
+              <span>Edit</span>
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

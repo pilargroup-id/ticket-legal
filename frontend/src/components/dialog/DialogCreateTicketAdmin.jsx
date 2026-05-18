@@ -119,6 +119,7 @@ function DialogCreateTicketAdmin({
   const [supportSearch, setSupportSearch] = useState('')
   const [supportOpen, setSupportOpen] = useState(false)
   const [priority, setPriority] = useState('')
+  const [statusDocument, setStatusDocument] = useState('unready')
   const [problem, setProblem] = useState('')
   const [selectedFile, setSelectedFile] = useState(null)
   const [selectedFileName, setSelectedFileName] = useState('')
@@ -180,6 +181,7 @@ function DialogCreateTicketAdmin({
       setSupportSearch('')
       setSupportOpen(false)
       setPriority('')
+      setStatusDocument('unready')
       setProblem('')
       setSelectedFile(null)
       setSelectedFileName('')
@@ -265,6 +267,7 @@ function DialogCreateTicketAdmin({
       formData.append('user_id', userId)
       formData.append('category_id', categoryId)
       formData.append('problem', problem.trim())
+      formData.append('status_document', statusDocument)
       formData.append('status', 'waiting') // default status
       formData.append('support_id', supportId)
       formData.append('priority', priority)
@@ -386,6 +389,21 @@ function DialogCreateTicketAdmin({
                       <option value="low">Low</option>
                       <option value="medium">Medium</option>
                       <option value="high">High</option>
+                    </select>
+                  </div>
+
+                  <div className="register-user-popup__field">
+                    <label className="register-user-popup__label" htmlFor="ticket-status-document">
+                      Status Document
+                    </label>
+                    <select
+                      id="ticket-status-document"
+                      className="register-user-popup__select"
+                      value={statusDocument}
+                      onChange={(e) => setStatusDocument(e.target.value)}
+                    >
+                      <option value="ready">Ready</option>
+                      <option value="unready">Unready</option>
                     </select>
                   </div>
 

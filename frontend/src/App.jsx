@@ -702,11 +702,11 @@ function App() {
 
       <div className="dashboard-stage">
         <Header
-          title="Ticketing IT"
+          title="Ticketing Legal"
           showMenuButton
           onMenuToggle={() => setMobileSidebarOpen(true)}
           breadcrumb={[
-            { label: 'Ticketing IT', href: '#' },
+            { label: 'Ticketing Legal', href: '#' },
             { label: activePage.title, href: '#', active: true },
           ]}
           searchProps={{

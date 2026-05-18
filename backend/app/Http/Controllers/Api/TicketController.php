@@ -116,6 +116,7 @@ class TicketController extends Controller
             'end_date',
             'time_spent',
             'is_late',
+            'status_document',
 
             'created_at',
             'updated_at',     // ✅ FIX: biar updated_at ga null

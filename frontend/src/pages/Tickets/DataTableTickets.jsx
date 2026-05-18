@@ -66,6 +66,43 @@ const columns = [
     ),
   },
   {
+    key: 'status_document',
+    header: 'status document',
+    cellStyle: { whiteSpace: 'nowrap', width: '12%' },
+    render: (ticket) => {
+      const val = ticket.status_document
+      const displayVal = typeof val === 'string' ? val.charAt(0).toUpperCase() + val.slice(1) : '-'
+      const isReady = val === 'ready'
+      return (
+        <span 
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            padding: '4px 10px',
+            borderRadius: '12px',
+            fontSize: '12px',
+            fontWeight: 600,
+            textTransform: 'capitalize',
+            backgroundColor: isReady ? '#ecfdf5' : '#fef2f2',
+            color: isReady ? '#059669' : '#dc2626',
+            border: `1px solid ${isReady ? '#a7f3d0' : '#fecaca'}`,
+          }}
+        >
+          <span 
+            style={{
+              width: '6px',
+              height: '6px',
+              borderRadius: '50%',
+              backgroundColor: isReady ? '#10b981' : '#ef4444',
+            }}
+          />
+          {displayVal}
+        </span>
+      )
+    }
+  },
+  {
     key: 'problem',
     header: 'problem',
     accessor: 'problem',
@@ -274,12 +311,13 @@ function DataTableTickets({
           title: (ticket) => ticket.ticketCode || ticket.id,
           description: (ticket) => ticket.problem,
           headerActions: (ticket) => {
-            const { rawStatus } = ticket
-            const isWaiting = rawStatus === 'waiting'
-            const isVoid = rawStatus === 'void'
-            const isResolved = rawStatus === 'resolved'
+            const statusStr = String(ticket?.rawStatus || ticket?.status || '').trim().toLowerCase()
+            const isWaiting = statusStr === 'waiting'
+            const isVoid = statusStr === 'void'
+            const isResolved = statusStr === 'resolved'
+            const isFeedback = statusStr === 'feedback'
 
-            if (isResolved || isVoid) return null
+            if (isResolved || isVoid || isFeedback) return null
 
             return (
               <div className="users-table__accordion-actions" style={{ gap: '0.5rem' }}>

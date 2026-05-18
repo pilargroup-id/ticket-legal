@@ -119,7 +119,7 @@ export default function TeamPerformence() {
     async function fetchMonthlyData() {
       setLoading(true)
       try {
-        const year = new Date().getFullYear()
+        const year = Number(selectedYear) || new Date().getFullYear()
         
         // Fetch tickets per month
         const ticketsRes = await SupportReports.getSupportTicketsPerMonth({
@@ -145,7 +145,7 @@ export default function TeamPerformence() {
     }
 
     fetchMonthlyData()
-  }, [selectedRange])
+  }, [selectedRange, selectedYear])
 
   const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
@@ -155,13 +155,15 @@ export default function TeamPerformence() {
     // Determine current month index (1-based)
     const now = new Date()
     const currentMonthIndex = now.getMonth() + 1
-    const year = now.getFullYear()
+    const year = Number(selectedYear) || now.getFullYear()
+    const isCurrentYear = String(selectedYear) === String(now.getFullYear())
+    const maxMonth = isCurrentYear ? currentMonthIndex : 12
 
     return monthlyTickets.series.map((s) => ({
       id: s.support_id,
       name: s.support_name,
       monthlyPerformance: monthlyTickets.labels
-        .filter((m) => m <= currentMonthIndex) // Only show up to current month
+        .filter((m) => m <= maxMonth) // Only show up to current month if current year
         .map((m) => ({
           month: monthNames[m - 1],
           year: year,
@@ -170,20 +172,22 @@ export default function TeamPerformence() {
           pending: 0,
         })),
     }))
-  }, [monthlyTickets])
+  }, [monthlyTickets, selectedYear])
 
   const mappedMembersTimeSpent = useMemo(() => {
     if (!monthlyTimeSpent.series) return []
 
     const now = new Date()
     const currentMonthIndex = now.getMonth() + 1
-    const year = now.getFullYear()
+    const year = Number(selectedYear) || now.getFullYear()
+    const isCurrentYear = String(selectedYear) === String(now.getFullYear())
+    const maxMonth = isCurrentYear ? currentMonthIndex : 12
 
     return monthlyTimeSpent.series.map((s) => ({
       id: s.support_id,
       name: s.support_name,
       monthlyPerformance: monthlyTimeSpent.labels
-        .filter((m) => m <= currentMonthIndex) // Only show up to current month
+        .filter((m) => m <= maxMonth) // Only show up to current month if current year
         .map((m) => ({
           month: monthNames[m - 1],
           year: year,
@@ -194,7 +198,7 @@ export default function TeamPerformence() {
           pending: 0,
         })),
     }))
-  }, [monthlyTimeSpent])
+  }, [monthlyTimeSpent, selectedYear])
 
   // Removed unused useEffect for yearOptions
 
@@ -237,6 +241,8 @@ export default function TeamPerformence() {
               <GroupBarChartTP
                 members={mappedMembersTickets}
                 emptyMessage={`Belum ada data monthly performance untuk tahun ${selectedYear}.`}
+                year={selectedYear}
+                onYearChange={setSelectedYear}
               />
             ) : loading ? (
               <p className="users-table-card__description">Loading data...</p>
@@ -261,6 +267,8 @@ export default function TeamPerformence() {
               <GroupBarTimeSpendMT
                 members={mappedMembersTimeSpent}
                 emptyMessage={`Belum ada data monthly time spend untuk tahun ${selectedYear}.`}
+                year={selectedYear}
+                onYearChange={setSelectedYear}
               />
             ) : loading ? (
               <p className="users-table-card__description">Loading data...</p>

@@ -1,4 +1,4 @@
-import { Edit03, FileText01, Trash03 } from '../../components/template/TemplateIcons.jsx'
+import { Edit03, FileText01, Trash03, Clock } from '../../components/template/TemplateIcons.jsx'
 
 export const PAGE_SIZE_OPTIONS = [5, 10, 15]
 export const DEFAULT_PAGE_SIZE = PAGE_SIZE_OPTIONS[0]
@@ -249,6 +249,13 @@ export function getTicketEmptyMessage(filters) {
 export function getTicketTableActions({
   onEdit,
   onFeedback,
+  onTimeline,
+  timelineKey = 'timeline',
+  timelineLabel = 'Timeline',
+  timelineIcon = Clock,
+  timelineVariant = 'primary',
+  timelineDisabled = false,
+  timelineHidden = null,
   editKey = 'edit',
   editLabel = 'Edit',
   editIcon = Edit03,
@@ -272,6 +279,15 @@ export function getTicketTableActions({
       disabled: editDisabled,
       hidden: editHidden,
       onClick: onEdit,
+    },
+    {
+      key: timelineKey,
+      label: timelineLabel,
+      icon: timelineIcon,
+      variant: timelineVariant,
+      disabled: timelineDisabled,
+      hidden: timelineHidden,
+      onClick: onTimeline,
     },
     {
       key: feedbackKey,

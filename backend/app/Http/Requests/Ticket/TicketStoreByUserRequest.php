@@ -25,6 +25,7 @@ class TicketStoreByUserRequest extends FormRequest
         'category_id' => 'required|exists:categories,id',
         'problem'     => 'required|string',
         'nama_pembuat'     => 'required|string',
+        'status_document'  => 'required|string|in:ready,unready',
         'image'       => 'nullable|file|max:10240', // max 10MB
     ];
 }

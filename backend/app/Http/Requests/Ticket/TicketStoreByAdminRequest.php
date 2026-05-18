@@ -30,6 +30,7 @@ class TicketStoreByAdminRequest extends FormRequest
             'problem' => 'required|string|max:1000',
             'status' => 'required|string|in:waiting,in_progress,resolved,void',
             'priority' => 'required|string|in:low,medium,high',
+            'status_document' => 'nullable|string|in:ready,unready',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120', 
             'start_date' => 'sometimes|required_if:status,resolved,in_progress|date',
             'end_date'   => 'sometimes|required_if:status,resolved|date|after_or_equal:start_date',

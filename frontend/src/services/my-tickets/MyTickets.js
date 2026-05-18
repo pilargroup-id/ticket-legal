@@ -195,6 +195,7 @@ export function normalizeMyTicket(ticket = {}) {
     waitingHour: formatValueWithUnit(ticket?.waiting_hour, 'jam'),
     timeSpent: formatValueWithUnit(ticket?.time_spent, 'menit'),
     isLate: Number(ticket?.is_late) === 1 ? 'Ya' : 'Tidak',
+    status_document: ticket?.status_document || '-',
     lastUpdated: formatTicketDateTime(updatedAtValue),
     lastUpdatedValue: updatedAtValue,
     timeline: createTicketTimeline(ticket),

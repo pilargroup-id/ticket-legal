@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 
 import Box from '@mui/material/Box'
 import { BarChart } from '@mui/x-charts/BarChart'
+import YearFilterTimeSpend from '../../../components/dropdown/filter/YearTimeSpend.jsx'
 
 const palette = ['#2a9d8f', '#e9c46a', '#f4a261', '#457b9d', '#e76f51', '#8d99ae']
 
@@ -132,6 +133,8 @@ export default function GroupBarChartTP({
   members = defaultMembers,
   height = 420,
   emptyMessage = 'Belum ada data monthly performance untuk tahun yang dipilih.',
+  year,
+  onYearChange,
 }) {
   const [hiddenSeriesKeys, setHiddenSeriesKeys] = useState([])
   const { dataset, legendItems, series } = useMemo(
@@ -155,30 +158,42 @@ export default function GroupBarChartTP({
         <div className="team-performance-chart__empty">{emptyMessage}</div>
       ) : series.length > 0 ? (
         <>
-          <div className="team-performance-chart__legend" aria-label="Team performance legend">
-            {legendItems.map((item) => (
-              <button
-                key={item.dataKey}
-                type="button"
-                className={[
-                  'team-performance-chart__legend-item',
-                  item.hidden ? 'team-performance-chart__legend-item--hidden' : '',
-                ]
-                  .filter(Boolean)
-                  .join(' ')}
-                aria-pressed={!item.hidden}
-                onClick={() => handleToggleSeries(item.dataKey)}
-              >
-                <span
-                  className="team-performance-chart__legend-swatch"
-                  aria-hidden="true"
-                  style={{ backgroundColor: item.color }}
-                />
-                <span className="team-performance-chart__legend-label">{item.name}</span>
-                <span className="team-performance-chart__legend-tooltip">{item.description}</span>
-              </button>
-            ))}
-          </div>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: 2,
+            }}
+          >
+            <div className="team-performance-chart__legend" aria-label="Team performance legend">
+              {legendItems.map((item) => (
+                <button
+                  key={item.dataKey}
+                  type="button"
+                  className={[
+                    'team-performance-chart__legend-item',
+                    item.hidden ? 'team-performance-chart__legend-item--hidden' : '',
+                  ]
+                    .filter(Boolean)
+                    .join(' ')}
+                  aria-pressed={!item.hidden}
+                  onClick={() => handleToggleSeries(item.dataKey)}
+                >
+                  <span
+                    className="team-performance-chart__legend-swatch"
+                    aria-hidden="true"
+                    style={{ backgroundColor: item.color }}
+                  />
+                  <span className="team-performance-chart__legend-label">{item.name}</span>
+                  <span className="team-performance-chart__legend-tooltip">{item.description}</span>
+                </button>
+              ))}
+            </div>
+
+            <YearFilterTimeSpend value={year} onChange={onYearChange} />
+          </Box>
 
           <Box sx={{ width: '100%', height }}>
             <BarChart
