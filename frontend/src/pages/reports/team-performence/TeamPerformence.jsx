@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
+import Skeleton from '@mui/material/Skeleton'
+
 
 import ButtonRangeDate from '../../../components/button/ButtonRangeDate.jsx'
 import GroupBarChartTP from '../../../components/chart/chart-team-performence/GroupBarChartMonthlyTP.jsx'
@@ -245,7 +247,28 @@ export default function TeamPerformence() {
                 onYearChange={setSelectedYear}
               />
             ) : loading ? (
-              <p className="users-table-card__description">Loading data...</p>
+              <div
+                style={{
+                  height: '320px',
+                  display: 'flex',
+                  alignItems: 'flex-end',
+                  gap: '16px',
+                  padding: '24px 32px 0 32px',
+                }}
+              >
+                {[45, 75, 55, 90, 35, 95, 65, 80, 50, 85, 60, 100].map((h, index) => (
+                  <Skeleton
+                    key={index}
+                    variant="rectangular"
+                    width="100%"
+                    height={`${h}%`}
+                    sx={{
+                      bgcolor: 'rgba(0, 167, 111, 0.1)',
+                      borderRadius: '4px 4px 0 0',
+                    }}
+                  />
+                ))}
+              </div>
             ) : (
               <p className="users-table-card__description">
                 Belum ada data pada rentang tanggal ini.
@@ -271,7 +294,28 @@ export default function TeamPerformence() {
                 onYearChange={setSelectedYear}
               />
             ) : loading ? (
-              <p className="users-table-card__description">Loading data...</p>
+              <div
+                style={{
+                  height: '320px',
+                  display: 'flex',
+                  alignItems: 'flex-end',
+                  gap: '16px',
+                  padding: '24px 32px 0 32px',
+                }}
+              >
+                {[30, 60, 85, 45, 90, 50, 75, 40, 80, 65, 95, 70].map((h, index) => (
+                  <Skeleton
+                    key={index}
+                    variant="rectangular"
+                    width="100%"
+                    height={`${h}%`}
+                    sx={{
+                      bgcolor: 'rgba(0, 180, 216, 0.1)',
+                      borderRadius: '4px 4px 0 0',
+                    }}
+                  />
+                ))}
+              </div>
             ) : (
               <p className="users-table-card__description">
                 Belum ada data pada rentang tanggal ini.

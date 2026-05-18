@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import Skeleton from "@mui/material/Skeleton";
+
 import CreateButton from "../../../components/button/CreateButton.jsx";
 import { ChevronDown } from "../../../components/template/TemplateIcons.jsx";
 import DataTableDetailTP from "./DataTableDetailTP.jsx";
@@ -198,7 +200,27 @@ const SupportPerformence = ({ filters: initialFilters = {} }) => {
 
       <div className="chart-card__body">
         {loading ? (
-          <p className="users-table-card__description">Loading support summary...</p>
+          <div style={styles.list}>
+            {[1, 2, 3].map((i) => (
+              <div
+                key={i}
+                style={{
+                  ...styles.card,
+                  borderColor: '#f1f5f9',
+                }}
+              >
+                <div style={styles.cardBody}>
+                  <Skeleton variant="rounded" width={140} height={15} sx={{ bgcolor: 'rgba(0, 0, 0, 0.06)' }} />
+                  <div style={styles.pills}>
+                    {[1, 2, 3, 4, 5, 6].map((p) => (
+                      <Skeleton key={p} variant="rounded" width={68} height={22} sx={{ bgcolor: 'rgba(0, 0, 0, 0.04)', borderRadius: '999px' }} />
+                    ))}
+                  </div>
+                </div>
+                <Skeleton variant="rounded" width={80} height={32} sx={{ bgcolor: 'rgba(0, 0, 0, 0.06)', borderRadius: '8px' }} />
+              </div>
+            ))}
+          </div>
         ) : agents.length === 0 ? (
           <p className="users-table-card__description">Belum ada data performa untuk periode ini.</p>
         ) : (
