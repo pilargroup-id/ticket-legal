@@ -190,7 +190,7 @@ class UserSeeder extends Seeder
         // =========================================
         // 2. AMBIL DEPARTMENT ID DARI DATABASE
         // =========================================
-        $departments = DB::table('departments')->pluck('id', 'department_name')->toArray();
+        $departments = DB::table('departments')->pluck('id', 'name')->toArray();
 
         // =========================================
         // 3. INSERT USERS
@@ -205,20 +205,20 @@ class UserSeeder extends Seeder
             }
 
             // Default role
-            $roleId = 3;
+            $role = 'user';
 
             // Override role untuk beberapa orang
             $specialRoles = [
-                'Azi Fauzi' => 1, // BOARD OF DIRECTOR
-                'Bayu Noegroho'   => 1, // BOARD OF DIRECTOR
-                'Apriyanto' => 1, // BOARD OF DIRECTOR
-                'Al Fatih Zainul Falah'   => 1, // misal FINANCE head
-                'Muhammad Nurfathan Athaillah Humaedi' => 2, // IT head
-                'Yulliemty' => 2 // contoh role lain
+                'Azi Fauzi' => 'admin', // BOARD OF DIRECTOR
+                'Bayu Noegroho'   => 'admin', // BOARD OF DIRECTOR
+                'Apriyanto' => 'admin', // BOARD OF DIRECTOR
+                'Al Fatih Zainul Falah'   => 'admin', // misal FINANCE head
+                'Muhammad Nurfathan Athaillah Humaedi' => 'admin', // IT head
+                'Yulliemty' => 'admin' // contoh role lain
             ];
 
             if (isset($specialRoles[$emp[0]])) {
-                $roleId = $specialRoles[$emp[0]];
+                $role = $specialRoles[$emp[0]];
             }
 
             DB::table('users')->insert([
@@ -226,9 +226,9 @@ class UserSeeder extends Seeder
                 'email'         => $emp[1] ?: null,
                 'username'      => strtolower($emp[2]),
                 'department_id' => $departments[$departmentName],
-                'role_id'       => $roleId,
+                'role'          => $role,
                 'password'      => bcrypt('piagam123'),
-                'status'      => 'Active',
+                'status'        => 'active',
                 'created_at'    => now(),
                 'updated_at'    => now(),
             ]);

@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('assets_code', 50)->nullable();
             $table->string('assets_name', 255)->nullable();
+            $table->string('image', 255)->nullable();
             $table->string('category', 255)->nullable();
             $table->string('status', 255)->nullable();
             $table->string('model', 255)->nullable();

@@ -29,11 +29,11 @@ class DepartmentSeeder extends Seeder
         $insertData = [];
 
         foreach ($mapping as $department => $locationName) {
-            $location = DB::table('locations')->where('location_name', $locationName)->first();
+            $location = DB::table('locations')->where('name', $locationName)->first();
 
             if ($location) {
                 $insertData[] = [
-                    'department_name' => $department,
+                    'name'            => $department,
                     'location_id'     => $location->id,
                     'created_at'      => now(),
                     'updated_at'      => now(),

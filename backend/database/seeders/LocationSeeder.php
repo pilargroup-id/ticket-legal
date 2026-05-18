@@ -33,7 +33,7 @@ class LocationSeeder extends Seeder
 
         foreach ($locations as $loc) {
             DB::table('locations')->insert([
-                'location_name' => $loc,
+                'name'          => $loc,
                 'created_at'    => now(),
                 'updated_at'    => now(),
             ]);
