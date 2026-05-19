@@ -159,6 +159,7 @@ function Sidebar({
   activePath = '/MyTickets',
   userName = '',
   userRole = '',
+  userAccessRole = '',
   primaryItems = primaryNavigationItems,
   secondaryItems = secondaryNavigationItems,
   onAction,
@@ -167,9 +168,17 @@ function Sidebar({
 }) {
   const [expandedGroups, setExpandedGroups] = useState({})
   const initials = getInitials(userName)
+
+  const filteredPrimaryItems = useMemo(() => {
+    if (userAccessRole === 'admin') {
+      return primaryItems
+    }
+    return primaryItems.filter((item) => item.id === 'my-tickets')
+  }, [primaryItems, userAccessRole])
+
   const activeExpandedGroups = useMemo(
-    () => getInitiallyExpandedGroups([...primaryItems, ...secondaryItems], activePath),
-    [activePath, primaryItems, secondaryItems],
+    () => getInitiallyExpandedGroups([...filteredPrimaryItems, ...secondaryItems], activePath),
+    [activePath, filteredPrimaryItems, secondaryItems],
   )
   const visibleExpandedGroups = useMemo(
     () => ({
@@ -283,7 +292,7 @@ function Sidebar({
       </div>
 
       <nav className="sidebar-nav" aria-label="Main navigation">
-        {primaryItems.map((item) => (
+        {filteredPrimaryItems.map((item) => (
           <SidebarNavItem
             key={getItemKey(item)}
             item={item}

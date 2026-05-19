@@ -510,6 +510,18 @@ function App() {
   }, [])
 
   useEffect(() => {
+    if (isInitializing) return
+
+    const user = sessionUser || getStoredUser()
+    const isUserAdmin = user?.role === 'admin'
+
+    if (user && !isUserAdmin && activePath !== '/MyTickets') {
+      window.history.replaceState({}, '', '/MyTickets')
+      setActivePath('/MyTickets')
+    }
+  }, [sessionUser, activePath, isInitializing])
+
+  useEffect(() => {
     const isVisited = visitedPaths.has(activePath)
     if (!isVisited && supportsPageLoadingBackdrop(activePath)) {
       setIsPageLoading(true)
@@ -703,6 +715,7 @@ function App() {
         activePath={activePath}
         userName={sessionUser?.name ?? ''}
         userRole={sessionUser?.job_position ?? sessionUser?.role ?? ''}
+        userAccessRole={sessionUser?.role ?? ''}
         onToggleCollapse={() => setSidebarCollapsed((currentValue) => !currentValue)}
         onCloseMobile={() => setMobileSidebarOpen(false)}
       />
