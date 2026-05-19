@@ -56,7 +56,7 @@ const columns = [
   },
   {
     key: 'status_document',
-    header: 'Status Document',
+    header: 'Document',
     cellStyle: { whiteSpace: 'nowrap', width: '12%' },
     render: (ticket) => {
       const val = ticket.status_document
@@ -221,8 +221,12 @@ function DataTableMT({
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px 0', overflowY: 'auto', maxHeight: 'calc(100vh - 260px)', paddingBottom: '80px' }}>
           {rows.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '32px', border: '1px dashed #ddd', borderRadius: '12px', backgroundColor: '#fafafa' }}>
-              <div style={{ fontWeight: 'bold', marginBottom: '8px', color: '#333' }}>No data</div>
-              <div style={{ color: '#666', fontSize: '14px' }}>Belum ada data yang bisa ditampilkan.</div>
+              <div style={{ fontWeight: 'bold', marginBottom: '8px', color: '#333' }}>
+                {isLoading ? 'Memuat data...' : 'No data'}
+              </div>
+              <div style={{ color: '#666', fontSize: '14px' }}>
+                {isLoading ? 'Memuat data ticket...' : 'Belum ada data yang bisa ditampilkan.'}
+              </div>
             </div>
           ) : (
             rows.map((ticket) => (

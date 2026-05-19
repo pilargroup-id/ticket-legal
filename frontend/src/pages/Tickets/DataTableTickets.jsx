@@ -67,7 +67,7 @@ const columns = [
   },
   {
     key: 'status_document',
-    header: 'status document',
+    header: 'document',
     cellStyle: { whiteSpace: 'nowrap', width: '12%' },
     render: (ticket) => {
       const val = ticket.status_document

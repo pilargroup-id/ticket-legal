@@ -17,8 +17,8 @@ function MyTickets({ activePage, searchQuery, onLoadingChange }) {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
   const [isValidationDialogOpen, setIsValidationDialogOpen] = useState(false)
   const [statusFilter, setStatusFilter] = useState('')
-  const [ticketRows, setTicketRows] = useState(() => getCache('my-tickets') || INITIAL_TICKET_ROWS)
-  const [isLoadingTickets, setIsLoadingTickets] = useState(!getCache('my-tickets'))
+  const [ticketRows, setTicketRows] = useState(INITIAL_TICKET_ROWS)
+  const [isLoadingTickets, setIsLoadingTickets] = useState(true)
   const [ticketsError, setTicketsError] = useState('')
   const [ticketRefreshVersion, setTicketRefreshVersion] = useState(0)
   const [dateRange, setDateRange] = useState({
@@ -92,10 +92,6 @@ function MyTickets({ activePage, searchQuery, onLoadingChange }) {
       onLoadingChange?.(false)
     }
   }, [isPageLoading, onLoadingChange])
-
-  if (isPageLoading) {
-    return <SkeletonLoading pageType="/MyTickets" />
-  }
 
   return (
     <>

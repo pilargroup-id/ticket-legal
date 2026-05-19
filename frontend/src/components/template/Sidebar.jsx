@@ -248,7 +248,6 @@ function Sidebar({
     'sidebar',
     collapsed ? 'collapsed' : '',
     mobileOpen ? 'mobile-open' : '',
-    isDimmed ? 'sidebar--loading' : '',
   ]
     .filter(Boolean)
     .join(' ')

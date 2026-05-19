@@ -38,7 +38,7 @@ function getCurrentPath() {
 }
 
 function supportsPageLoadingBackdrop(path) {
-  return path === '/MyTickets' || path === '/TicketsOverview'
+  return false
 }
 
 const pageDetails = {
@@ -759,7 +759,7 @@ function App() {
           <div
             className={`dashboard-content${isTicketWorkspacePage && !isMobile ? ' dashboard-content--mytickets' : ''}`}
           >
-            {isInitializing ? (
+            {isInitializing && !isTicketWorkspacePage ? (
               <SkeletonLoading pageType={activePath} />
             ) : (
               <>
