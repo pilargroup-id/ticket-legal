@@ -123,6 +123,7 @@ public function approveUser($id)
             return response()->json(['message' => 'User not found in database'], 404);
         }
 
+        $user->load('department');
         $token = \Tymon\JWTAuth\Facades\JWTAuth::fromUser($user);
 
         return response()->json([

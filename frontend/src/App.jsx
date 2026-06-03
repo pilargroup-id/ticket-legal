@@ -433,7 +433,16 @@ function App() {
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
   const isInitialMount = useRef(true)
-  const isAdmin = sessionUser?.is_admin === true || sessionUser?.department_id === 2
+
+  const userDepartment = sessionUser?.department_name ?? sessionUser?.department ?? ''
+  const userRole = sessionUser?.job_position ?? sessionUser?.role ?? ''
+  const isITorLegal =
+    userDepartment?.toLowerCase() === 'it' ||
+    userDepartment?.toLowerCase() === 'legal' ||
+    userRole?.toLowerCase().includes('it ') ||
+    userRole?.toLowerCase().includes('legal')
+
+  const isAdmin = sessionUser?.is_admin === true || sessionUser?.department_id === 2 || isITorLegal
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768)
@@ -719,6 +728,7 @@ function App() {
         activePath={activePath}
         userName={sessionUser?.name ?? ''}
         userRole={sessionUser?.job_position ?? sessionUser?.role ?? ''}
+        userDepartment={sessionUser?.department_name ?? sessionUser?.department ?? ''}
         role={sessionUser?.role ?? ''}
         isAdmin={isAdmin}
         onToggleCollapse={() => setSidebarCollapsed((currentValue) => !currentValue)}

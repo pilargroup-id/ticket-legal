@@ -22,13 +22,17 @@ class JwtAuthMiddleware
         }
 
         try {
-            // Parse JWT token dari pilargroup
             $payload = JWTAuth::parseToken()->getPayload();
 
-            $departmentId = $payload->get('department_id');
-            $isAdmin = $departmentId == 2;
+            $departmentId   = $payload->get('department_id');
+            $departmentName = strtoupper(trim((string) $payload->get('department')));
+            $role           = strtolower(trim((string) $payload->get('role')));
 
-            // Merge semua auth data dari JWT payload ke request
+            $adminDeptNames = ['IT', 'LEGAL'];
+            $isAdmin = $departmentId == 2
+                || $role === 'admin'
+                || in_array($departmentName, $adminDeptNames, true);
+
             $request->merge([
                 'auth_user_id'    => $payload->get('sub'),
                 'auth_username'   => $payload->get('username'),
