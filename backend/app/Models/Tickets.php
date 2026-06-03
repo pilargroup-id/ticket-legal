@@ -28,6 +28,7 @@ class Tickets extends Model
         'end_date',
         'time_spent',
         'is_late',
+        'status_document',
         'updated_at',
         'created_at',
     ];

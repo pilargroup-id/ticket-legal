@@ -266,6 +266,7 @@ Buat ticket baru oleh user.
 | `request_date` | datetime | ❌ | Default: now |
 | `nama_pembuat` | string | ❌ | Nama pembuat (opsional) |
 | `image` | file | ❌ | Foto/screenshot masalah |
+| `status_document` | string | ❌ | Status document (ready/unready) |
 
 **Response `201`:**
 ```json
@@ -294,6 +295,7 @@ Update ticket oleh user (misal edit problem atau ganti gambar).
 |---|---|---|
 | `problem` | string | Deskripsi masalah |
 | `image` | file | Ganti gambar (gambar lama dihapus) |
+| `status_document` | string | Status document (ready/unready) |
 
 **Response `200`:**
 ```json
@@ -661,6 +663,7 @@ Buat ticket oleh admin.
 | `request_date` | datetime | ❌ | Default: now |
 | `nama_pembuat` | string | ❌ | |
 | `image` | file | ❌ | |
+| `status_document` | string | ❌ | Status document (ready/unready) |
 
 **Response `201`:**
 ```json

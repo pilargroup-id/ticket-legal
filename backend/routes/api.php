@@ -38,7 +38,6 @@ Route::post('/register', [AuthController::class, 'register'])->name('api.registe
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/department', [DepartmentController::class, 'index']);
 
-
 Route::middleware('internal.secret')->group(function () {
     Route::post('/internal/sync-user', [InternalSyncController::class, 'syncUser']);
     Route::delete('/internal/sync-user/{username}', [InternalSyncController::class, 'deleteUser']);
@@ -63,7 +62,7 @@ Route::middleware('auth.jwt')->group(function () {
     // USER SIDE
     // ===========================
     Route::prefix('user')->group(function () {
-        // ticket (user)
+        // ticket (user)c
         Route::post('/ticket', [TicketController::class, 'storeByUser']);
         Route::get('/tickets', [TicketController::class, 'indexUser']); // sebelumnya /my-ticket
         Route::put('/ticket/{id}', [TicketController::class, 'updateByUser']);

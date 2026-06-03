@@ -19,6 +19,7 @@ function DialogEditTicket({
   const [categorySearch, setCategorySearch] = useState('')
   const [categoryOpen, setCategoryOpen] = useState(false)
   const [problem, setProblem] = useState('')
+  const [statusDocument, setStatusDocument] = useState('unready')
   const [selectedFile, setSelectedFile] = useState(null)
   const [selectedFileName, setSelectedFileName] = useState('')
   const [isDragActive, setIsDragActive] = useState(false)
@@ -64,6 +65,7 @@ function DialogEditTicket({
       setCategorySearch('')
       setCategoryOpen(false)
       setProblem('')
+      setStatusDocument('unready')
       setSelectedFile(null)
       setSelectedFileName('')
       setIsDragActive(false)
@@ -76,6 +78,7 @@ function DialogEditTicket({
     setCategorySearch(ticket.category !== '-' ? ticket.category : '')
     setCategoryOpen(false)
     setProblem(ticket.problem || '')
+    setStatusDocument(ticket.status_document || 'unready')
     setSelectedFile(null)
     setSelectedFileName(ticket.image ? 'Gambar saat ini (Akan diganti jika upload baru)' : '')
     setIsDragActive(false)
@@ -142,6 +145,7 @@ function DialogEditTicket({
       formData.append('_method', 'PUT') // Laravel spoofing for PUT with FormData
       formData.append('category_id', categoryId)
       formData.append('problem', problem.trim())
+      formData.append('status_document', statusDocument)
 
       if (namaPembuat) {
         formData.append('nama_pembuat', namaPembuat)
@@ -230,6 +234,22 @@ function DialogEditTicket({
                       readOnly
                       disabled
                     />
+                  </div>
+
+                  <div className="register-user-popup__field">
+                    <label className="register-user-popup__label" htmlFor="ticket-status-document-edit">
+                      Status Document
+                    </label>
+                    <select
+                      id="ticket-status-document-edit"
+                      className="register-user-popup__input"
+                      value={statusDocument}
+                      onChange={(e) => setStatusDocument(e.target.value)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <option value="unready">Unready</option>
+                      <option value="ready">Ready</option>
+                    </select>
                   </div>
 
                   <div className="register-user-popup__field register-user-popup__field--full">

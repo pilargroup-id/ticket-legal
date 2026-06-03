@@ -28,7 +28,7 @@ class JwtAuthMiddleware
             $departmentName = strtoupper(trim((string) $payload->get('department')));
             $role           = strtolower(trim((string) $payload->get('role')));
 
-            $adminDeptNames = ['IT', 'LEGAL'];
+            $adminDeptNames = ['LEGAL'];
             $isAdmin = $departmentId == 2
                 || $role === 'admin'
                 || in_array($departmentName, $adminDeptNames, true);
@@ -38,6 +38,7 @@ class JwtAuthMiddleware
                 'auth_username'   => $payload->get('username'),
                 'auth_name'       => $payload->get('name'),
                 'auth_is_admin'   => $isAdmin,
+                'auth_role'       => $role,
                 'auth_dept_id'    => $departmentId,
                 'auth_dept_name'  => $payload->get('department'),
                 'auth_company_id' => $payload->get('company_id'),

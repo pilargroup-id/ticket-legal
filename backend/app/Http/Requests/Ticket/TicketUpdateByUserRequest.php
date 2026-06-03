@@ -26,6 +26,7 @@ class TicketUpdateByUserRequest extends FormRequest
         'problem'      => 'sometimes|required|string',
         'nama_pembuat' => 'sometimes|required|string',
         'image'        => 'sometimes|nullable|image|max:10240', // max 1MB
+        'status_document' => 'sometimes|nullable|string|in:ready,unready',
         ];
     }
 }

@@ -120,6 +120,7 @@ function DialogCreateTicketAdmin({
   const [supportOpen, setSupportOpen] = useState(false)
   const [priority, setPriority] = useState('')
   const [problem, setProblem] = useState('')
+  const [statusDocument, setStatusDocument] = useState('unready')
   const [selectedFile, setSelectedFile] = useState(null)
   const [selectedFileName, setSelectedFileName] = useState('')
   const [isDragActive, setIsDragActive] = useState(false)
@@ -181,6 +182,7 @@ function DialogCreateTicketAdmin({
       setSupportOpen(false)
       setPriority('')
       setProblem('')
+      setStatusDocument('unready')
       setSelectedFile(null)
       setSelectedFileName('')
       setIsDragActive(false)
@@ -272,6 +274,7 @@ function DialogCreateTicketAdmin({
       formData.append('support_id', supportId)
       formData.append('support_name', supportName)
       formData.append('priority', priority)
+      formData.append('status_document', statusDocument)
 
       if (namaPembuat) {
         formData.append('nama_pembuat', namaPembuat)
@@ -407,6 +410,22 @@ function DialogCreateTicketAdmin({
                       readOnly
                       disabled
                     />
+                  </div>
+
+                  <div className="register-user-popup__field">
+                    <label className="register-user-popup__label" htmlFor="ticket-status-document-admin">
+                      Status Document
+                    </label>
+                    <select
+                      id="ticket-status-document-admin"
+                      className="register-user-popup__input"
+                      value={statusDocument}
+                      onChange={(e) => setStatusDocument(e.target.value)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <option value="unready">Unready</option>
+                      <option value="ready">Ready</option>
+                    </select>
                   </div>
 
                   <div className="register-user-popup__field register-user-popup__field--full">

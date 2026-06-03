@@ -73,20 +73,38 @@ function MobileCardMT({ ticket, onEdit, onFeedback }) {
             <div style={{ fontSize: '13px', color: '#64748b' }}>{ticket.category || '-'}</div>
           </div>
         </div>
-        {/* Status Pill */}
-        <div style={{
-          backgroundColor: statusColors.bg,
-          color: statusColors.text,
-          padding: '6px 12px',
-          borderRadius: '12px',
-          fontSize: '12px',
-          fontWeight: 600,
-          display: 'flex',
-          alignItems: 'center',
-          gap: '6px'
-        }}>
-          <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: statusColors.dot }} />
-          {ticket.status || '-'}
+        {/* Status Pills */}
+        <div style={{ display: 'flex', gap: '8px', flexDirection: 'column', alignItems: 'flex-end' }}>
+          <div style={{
+            backgroundColor: statusColors.bg,
+            color: statusColors.text,
+            padding: '6px 12px',
+            borderRadius: '12px',
+            fontSize: '12px',
+            fontWeight: 600,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px'
+          }}>
+            <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: statusColors.dot }} />
+            {ticket.status || '-'}
+          </div>
+          {ticket.statusDocument && (
+            <div style={{
+              backgroundColor: ticket.statusDocument === 'unready' ? '#fef2f2' : (ticket.statusDocument === 'ready' ? '#ecfdf5' : '#f1f5f9'),
+              color: ticket.statusDocument === 'unready' ? '#ef4444' : (ticket.statusDocument === 'ready' ? '#10b981' : '#64748b'),
+              padding: '4px 10px',
+              borderRadius: '12px',
+              fontSize: '11px',
+              fontWeight: 600,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px'
+            }}>
+              {ticket.statusDocument === 'unready' && '⚠️ '}
+              {ticket.statusDocument}
+            </div>
+          )}
         </div>
       </div>
 

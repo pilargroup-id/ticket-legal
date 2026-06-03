@@ -212,6 +212,7 @@ export function normalizeTicket(ticket = {}) {
     timeSpent: formatValueWithUnit(ticket?.time_spent, 'menit'),
     time_spent: ticket?.time_spent,
     isLate: Number(ticket?.is_late) === 1 ? 'Ya' : 'Tidak',
+    statusDocument: ticket?.status_document || '-',
     lastUpdated: formatTicketDateTime(updatedAtValue),
     lastUpdatedValue: updatedAtValue,
     timeline: createTicketTimeline(ticket),

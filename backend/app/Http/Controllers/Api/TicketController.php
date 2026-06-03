@@ -90,6 +90,7 @@ class TicketController extends Controller
                 'request_date', 'waiting_hour',
                 'start_date', 'end_date',
                 'time_spent', 'is_late',
+                'status_document',
                 'created_at', 'updated_at',
             ])
             ->with(['category:id,name', 'assets:id,assets_name', 'feedback']);

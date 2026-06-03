@@ -18,6 +18,7 @@ class TicketStoreByUserRequest extends FormRequest
             'problem'      => 'required|string',
             'nama_pembuat' => 'required|string|max:255',
             'image'        => 'nullable|file|max:10240',
+            'status_document' => 'nullable|string|in:ready,unready',
         ];
     }
 }

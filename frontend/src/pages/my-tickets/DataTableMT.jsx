@@ -47,11 +47,24 @@ const columns = [
     key: 'status',
     header: 'Status',
     cellStyle: { whiteSpace: 'nowrap', width: '10%' },
-    render: (ticket) => (
-      <DataTableStatus inline variant={getStatusVariant(ticket.status)}>
-        {ticket.status}
-      </DataTableStatus>
-    ),
+    render: (ticket) => {
+      const isUnready = ticket.statusDocument === 'unready'
+      const docVariant = isUnready ? 'inactive' : (ticket.statusDocument === 'ready' ? 'active' : 'inactive')
+      
+      return (
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <DataTableStatus inline variant={getStatusVariant(ticket.status)}>
+            {ticket.status}
+          </DataTableStatus>
+          {ticket.statusDocument && ticket.statusDocument !== '-' && (
+            <DataTableStatus inline variant={docVariant}>
+              {isUnready && <span style={{ marginRight: '4px' }}>⚠️</span>}
+              Doc: {ticket.statusDocument}
+            </DataTableStatus>
+          )}
+        </div>
+      )
+    },
   },
    {
     key: 'problem',

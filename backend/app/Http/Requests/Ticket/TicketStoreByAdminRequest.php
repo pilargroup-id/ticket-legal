@@ -29,6 +29,7 @@ class TicketStoreByAdminRequest extends FormRequest
             'time_spent'   => 'sometimes|required_if:status,resolved|integer|min:1',
             'solution'     => 'sometimes|required_if:status,resolved|string|max:1000',
             'notes'        => 'sometimes|required_if:status,resolved|string|max:1000',
+            'status_document' => 'nullable|string|in:ready,unready',
         ];
     }
 }

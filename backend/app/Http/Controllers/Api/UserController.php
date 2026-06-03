@@ -14,7 +14,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::with('department.location')->latest()->get();
+        $users = User::with('userDepartments')->latest()->get();
 
         return response()->json([
             'message' => 'Users fetched successfully',
@@ -24,7 +24,9 @@ class UserController extends Controller
 
     public function developer()
     {
-        $developer = User::where('role', 'admin')->with('department.location')->latest()->get();
+        $developer = User::whereHas('userDepartments', function ($q) {
+            $q->where('department_id', 2);
+        })->with('userDepartments')->latest()->get();
 
         return response()->json([
             'message' => 'Users fetched successfully',
@@ -52,7 +54,9 @@ class UserController extends Controller
 
     public function supportIndex()
     {
-        $users = User::where('role', 'admin')->where('status', 'active')->get();
+        $users = User::whereHas('userDepartments', function ($q) {
+            $q->where('department_id', 2);
+        })->with('userDepartments')->where('is_active', true)->get();
 
         return response()->json([
             'message' => 'Support users fetched successfully',
@@ -68,6 +72,7 @@ class UserController extends Controller
                 'id'           => $request->auth_user_id,
                 'name'         => $request->auth_name,
                 'username'     => $request->auth_username,
+                'role'         => $request->auth_role,
                 'is_admin'     => $request->auth_is_admin,
                 'department_id'=> $request->auth_dept_id,
                 'department'   => $request->auth_dept_name,
@@ -115,7 +120,9 @@ class UserController extends Controller
 
     public function supports()
     {
-        $users = User::where('role', 'admin')->get();
+        $users = User::whereHas('userDepartments', function ($q) {
+            $q->where('department_id', 2);
+        })->with('userDepartments')->get();
 
         return response()->json([
             'message' => 'Support list',

@@ -50,19 +50,30 @@ const columns = [
   },
   {
     key: 'category',
-    header: 'category',
+    header: 'category & status',
     accessor: 'category',
-    cellStyle: { minWidth: '200px' },
-  },
-  {
-    key: 'status',
-    header: 'status',
-    cellStyle: { whiteSpace: 'nowrap', width: '10%' },
-    render: (ticket) => (
-      <DataTableStatus inline variant={getStatusVariant(ticket.status)}>
-        {ticket.status}
-      </DataTableStatus>
-    ),
+    cellStyle: { minWidth: '250px' },
+    render: (ticket) => {
+      const isUnready = ticket.statusDocument === 'unready'
+      const docVariant = isUnready ? 'inactive' : (ticket.statusDocument === 'ready' ? 'active' : 'inactive')
+      
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', alignItems: 'flex-start' }}>
+          <div>{ticket.category || '-'}</div>
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+            <DataTableStatus inline variant={getStatusVariant(ticket.status)}>
+              {ticket.status}
+            </DataTableStatus>
+            {ticket.statusDocument && ticket.statusDocument !== '-' && (
+              <DataTableStatus inline variant={docVariant}>
+                {isUnready && <span style={{ marginRight: '4px' }}>⚠️</span>}
+                Doc: {ticket.statusDocument}
+              </DataTableStatus>
+            )}
+          </div>
+        </div>
+      )
+    },
   },
   {
     key: 'problem',
@@ -269,6 +280,7 @@ function DataTableTickets({
             const isInProgress = statusClean === 'in_progress' || statusClean === 'in progress'
             const isVoid = statusClean === 'void'
             const isResolved = statusClean === 'resolved'
+            const isUnready = ticket.statusDocument === 'unready'
 
             if (isResolved || isVoid) return null
 
@@ -276,7 +288,8 @@ function DataTableTickets({
               <div className="users-table__accordion-actions" style={{ gap: '0.5rem' }}>
                 <ButtonExecutionTickets
                   tone="warning"
-                  disabled={!isWaiting && !isInProgress}
+                  disabled={(!isWaiting && !isInProgress) || isUnready}
+                  title={isUnready ? 'Status Document Unready' : ''}
                   onClick={(event) => {
                     event.stopPropagation()
                     openActionDialog('execution', ticket)
