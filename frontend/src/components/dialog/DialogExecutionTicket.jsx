@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom'
 import { XClose } from '../template/TemplateIcons.jsx'
 import api from '../../services/api.js'
 import DialogLoading from './DialogLoading.jsx'
+import SliderProgressTicket from '../slider/SliderProgressTicket.jsx'
 
 const getLocalDatetimeString = (date) => {
   if (!date) return ''
@@ -53,7 +54,7 @@ function DialogExecutionTicket({
     start_date: '',
     end_date: '',
     time_spent: 0,
-    solution: '',
+    progres_percent: 0,
   })
   const [isLoading, setIsLoading] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -71,7 +72,7 @@ function DialogExecutionTicket({
         start_date: ticket.startDateValue ? formatToDatetimeLocal(ticket.startDateValue) : nowStr,
         end_date: ticket.endDateValue ? formatToDatetimeLocal(ticket.endDateValue) : '',
         time_spent: ticket.time_spent || 0,
-        solution: ticket.solution || '',
+        progres_percent: ticket.progresPercent ?? 0,
       })
     }
   }, [isOpen, ticket])
@@ -142,14 +143,16 @@ function DialogExecutionTicket({
         support_id: formData.support_id,
         priority: formData.priority.toLowerCase(),
         start_date: formData.start_date,
+        progres_percent: Number(formData.progres_percent),
       }
 
       if (isResolved) {
-        payload.solution = formData.solution
         payload.end_date = formData.end_date
         if (formData.time_spent > 0) {
           payload.time_spent = formData.time_spent
         }
+        // When resolved, force progress to 100
+        payload.progres_percent = 100
       }
 
       const response = await api.put(`/ticket/${ticket.id}`, payload)
@@ -318,21 +321,31 @@ function DialogExecutionTicket({
               </div>
             </div>
 
-            {/* Row 3: Solution */}
+            {/* Row 3: Progress Percent */}
             <div className="register-user-popup__field">
-              <label className="register-user-popup__label" htmlFor="solution">
-                Solution
+              <label className="register-user-popup__label" htmlFor="progres_percent">
+                Progress Pengerjaan
+                <span style={{ marginLeft: '0.5rem', color: 'var(--template-fg-muted)', fontWeight: 400 }}>
+                  ({formData.progres_percent}%)
+                </span>
               </label>
-              <textarea
-                id="solution"
-                name="solution"
-                className="register-user-popup__input master-project-popup__textarea"
-                style={{ minHeight: '100px', width: '100%', boxSizing: 'border-box' }}
-                placeholder="Jelaskan solusi atau tindakan yang telah dilakukan."
-                value={formData.solution}
-                onChange={handleChange}
-              />
+              <div style={{ padding: '1.5rem 0.5rem 0.5rem' }}>
+                <SliderProgressTicket
+                  value={formData.progres_percent}
+                  onChange={(_, newValue) =>
+                    setFormData((prev) => ({ ...prev, progres_percent: newValue }))
+                  }
+                  disabled={formData.status === 'Resolved'}
+                />
+              </div>
+              {formData.status === 'Resolved' && (
+                <p className="register-user-popup__hint" style={{ fontSize: '0.7rem', marginTop: '0.25rem', color: 'var(--accent-teal, #2a9d8f)' }}>
+                  ✓ Otomatis 100% saat status Resolved.
+                </p>
+              )}
             </div>
+
+
 
           </div>
         </div>

@@ -91,6 +91,7 @@ class TicketController extends Controller
                 'start_date', 'end_date',
                 'time_spent', 'is_late',
                 'status_document',
+                'progres_percent',
                 'created_at', 'updated_at',
             ])
             ->with(['category:id,name', 'assets:id,assets_name', 'feedback']);
@@ -289,6 +290,10 @@ class TicketController extends Controller
                 'is_late'      => 0,
             ];
 
+            if (array_key_exists('progres_percent', $data)) {
+                $payload['progres_percent'] = (int) $data['progres_percent'];
+            }
+
             if (array_key_exists('assets_id', $data)) {
                 $payload['assets_id'] = $data['assets_id'];
             }
@@ -357,6 +362,7 @@ class TicketController extends Controller
                 'solution'     => $data['solution'],
                 'is_late'      => $isLate,
                 'waiting_hour' => $waitingHour,
+                'progres_percent' => 100,
             ];
 
             if (array_key_exists('assets_id', $data)) $payload['assets_id'] = $data['assets_id'];

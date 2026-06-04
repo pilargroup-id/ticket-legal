@@ -25,6 +25,7 @@ class TicketUpdateByAdminRequest extends FormRequest
             'solution'     => 'sometimes|required_if:status,resolved|string|max:1000',
             'notes'        => 'sometimes|required_if:status,resolved|string|max:1000',
             'status_document' => 'sometimes|nullable|string|in:ready,unready',
+            'progres_percent' => 'sometimes|nullable|integer|min:0|max:100',
         ];
     }
 }

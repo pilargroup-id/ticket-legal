@@ -68,14 +68,8 @@ const columns = [
   },
    {
     key: 'problem',
-    header: 'Problem',
+    header: 'Request',
     accessor: 'problem',
-    cellStyle: { minWidth: '320px' },
-  },
-  {
-    key: 'solution',
-    header: 'Solution',
-    accessor: 'solution',
     cellStyle: { minWidth: '320px' },
   },
   {

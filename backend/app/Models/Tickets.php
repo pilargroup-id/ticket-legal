@@ -29,17 +29,19 @@ class Tickets extends Model
         'time_spent',
         'is_late',
         'status_document',
+        'progres_percent',
         'updated_at',
         'created_at',
     ];
 
     protected $casts = [
-        'request_date' => 'datetime',
-        'start_date'   => 'datetime',
-        'end_date'     => 'datetime',
-        'waiting_hour' => 'integer',
-        'time_spent'   => 'integer',
-        'is_late'      => 'boolean',
+        'request_date'    => 'datetime',
+        'start_date'      => 'datetime',
+        'end_date'        => 'datetime',
+        'waiting_hour'    => 'integer',
+        'time_spent'      => 'integer',
+        'is_late'         => 'boolean',
+        'progres_percent' => 'integer',
     ];
 
     // ==================== RELATIONSHIPS ====================

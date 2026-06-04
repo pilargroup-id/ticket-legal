@@ -36,7 +36,8 @@ class TicketResource extends JsonResource
             'end_date'       => $this->end_date?->format('Y-m-d H:i:s'),
             'time_spent'     => $this->time_spent,
             'is_late'        => $this->is_late,
-            'status_document'=> $this->status_document,
+            'status_document' => $this->status_document,
+            'progres_percent' => $this->progres_percent ?? 0,
             'created_at'     => $this->created_at?->format('Y-m-d H:i:s'),
             'updated_at'     => $this->updated_at?->format('Y-m-d H:i:s'),
         ];

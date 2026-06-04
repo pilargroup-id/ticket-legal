@@ -212,7 +212,7 @@ function DialogCreateTicket({
 
                   <div className="register-user-popup__field">
                     <label className="register-user-popup__label" htmlFor="ticket-nama-pembuat">
-                      Nama Pembuat
+                      Requester Name
                     </label>
                     <input
                       id="ticket-nama-pembuat"
@@ -242,7 +242,7 @@ function DialogCreateTicket({
 
                   <div className="register-user-popup__field register-user-popup__field--full">
                     <label className="register-user-popup__label" htmlFor="ticket-issue">
-                      Masalah
+                      Request
                     </label>
                     <textarea
                       id="ticket-issue"

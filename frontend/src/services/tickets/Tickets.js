@@ -213,6 +213,7 @@ export function normalizeTicket(ticket = {}) {
     time_spent: ticket?.time_spent,
     isLate: Number(ticket?.is_late) === 1 ? 'Ya' : 'Tidak',
     statusDocument: ticket?.status_document || '-',
+    progresPercent: Number(ticket?.progres_percent) || 0,
     lastUpdated: formatTicketDateTime(updatedAtValue),
     lastUpdatedValue: updatedAtValue,
     timeline: createTicketTimeline(ticket),

@@ -21,6 +21,12 @@ import {
 
 import { formatTicketDate, formatTicketTimeWIB, getFeedbacks, normalizeTicket } from '../../services/tickets/Tickets.js'
 import FeedbackRating from '../../components/rating/RatingFeedBack.jsx'
+import ButtonHoldTickets from '../../components/button/ButtonHoldTickets.jsx'
+import ButtonResolveTickets from '../../components/button/ButtonResolveTickets.jsx'
+import ButtonProgressTickets from '../../components/button/ButtonProgressTickets.jsx'
+import PlayArrowIcon from '@mui/icons-material/PlayArrow'
+import PauseIcon from '@mui/icons-material/Pause'
+import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined'
 
 export const INITIAL_TICKET_ROWS = DEFAULT_TICKET_ROWS
 
@@ -77,14 +83,8 @@ const columns = [
   },
   {
     key: 'problem',
-    header: 'problem',
+    header: 'Requesst',
     accessor: 'problem',
-    cellStyle: { minWidth: '260px' },
-  },
-  {
-    key: 'solution',
-    header: 'solution',
-    accessor: 'solution',
     cellStyle: { minWidth: '260px' },
   },
   {
@@ -96,6 +96,53 @@ const columns = [
       ticket.supportName && ticket.supportName !== '-'
         ? <DataTableIdentity title={ticket.supportName} />
         : '-',
+  },
+  {
+    key: 'progresPercent',
+    header: 'progress',
+    cellStyle: { minWidth: '160px' },
+    render: (ticket) => {
+      const pct = Number(ticket.progresPercent) || 0
+      const rawStatus = String(ticket.rawStatus || '').trim().toLowerCase()
+      const isResolved = rawStatus === 'resolved'
+      const displayPct = isResolved ? 100 : pct
+      const color = displayPct >= 100
+        ? '#2a9d8f'
+        : displayPct >= 50
+          ? '#f4a261'
+          : '#e76f51'
+
+      return (
+        <div style={{ minWidth: '140px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+            <span style={{ fontSize: '0.75rem', color: 'var(--template-fg-muted)' }}>
+              {isResolved ? 'Selesai' : 'Pengerjaan'}
+            </span>
+            <span style={{ fontSize: '0.75rem', fontWeight: 700, color }}>
+              {displayPct}%
+            </span>
+          </div>
+          <div style={{
+            height: '6px',
+            borderRadius: '999px',
+            background: '#e5e7eb',
+            overflow: 'hidden',
+          }}>
+            <div style={{
+              height: '100%',
+              width: `${displayPct}%`,
+              borderRadius: '999px',
+              background: displayPct >= 100
+                ? 'linear-gradient(90deg, #2a9d8f, #38c2b2)'
+                : displayPct >= 50
+                  ? 'linear-gradient(90deg, #f4a261, #e9c46a)'
+                  : 'linear-gradient(90deg, #e76f51, #f4a261)',
+              transition: 'width 0.4s ease',
+            }} />
+          </div>
+        </div>
+      )
+    },
   },
 ]
 
@@ -277,6 +324,7 @@ function DataTableTickets({
             const rawStatusVal = ticket.rawStatus || ticket.status || ''
             const statusClean = String(rawStatusVal).trim().toLowerCase()
             const isWaiting = statusClean === 'waiting'
+            const isHold = statusClean === 'hold' || statusClean === 'pending'
             const isInProgress = statusClean === 'in_progress' || statusClean === 'in progress'
             const isVoid = statusClean === 'void'
             const isResolved = statusClean === 'resolved'
@@ -286,17 +334,44 @@ function DataTableTickets({
 
             return (
               <div className="users-table__accordion-actions" style={{ gap: '0.5rem' }}>
-                <ButtonExecutionTickets
-                  tone="warning"
-                  disabled={(!isWaiting && !isInProgress) || isUnready}
-                  title={isUnready ? 'Status Document Unready' : ''}
-                  onClick={(event) => {
-                    event.stopPropagation()
-                    openActionDialog('execution', ticket)
-                  }}
-                >
-                  <Play size={16} /> Execution
-                </ButtonExecutionTickets>
+                {(isWaiting || isHold || isInProgress) && (
+                  <ButtonProgressTickets
+                    tone="warning"
+                    disabled={isUnready}
+                    title={isUnready ? 'Status Document Unready' : ''}
+                    onClick={(event) => {
+                      event.stopPropagation()
+                      openActionDialog('progress', ticket)
+                    }}
+                  >
+                    <PlayArrowIcon fontSize="small" />
+                    {isWaiting ? ' Start' : isHold ? ' Continue' : ' Progress'}
+                  </ButtonProgressTickets>
+                )}
+                {isInProgress && (
+                  <ButtonHoldTickets
+                    tone="danger"
+                    disabled={isUnready}
+                    onClick={(event) => {
+                      event.stopPropagation()
+                      openActionDialog('hold', ticket)
+                    }}
+                  >
+                    <PauseIcon fontSize="small" /> Hold
+                  </ButtonHoldTickets>
+                )}
+                {isInProgress && (
+                  <ButtonResolveTickets
+                    tone="default"
+                    disabled={isUnready}
+                    onClick={(event) => {
+                      event.stopPropagation()
+                      openActionDialog('resolve', ticket)
+                    }}
+                  >
+                    <CheckCircleOutlinedIcon fontSize="small" /> Resolve
+                  </ButtonResolveTickets>
+                )}
                 <ButtonVoidTickets
                   tone="danger"
                   disabled={isVoid}
